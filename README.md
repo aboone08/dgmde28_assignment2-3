@@ -3,6 +3,7 @@ DGMD E-28 Assignment 2c: Tic Tac Toe Part 3
 
 ##Deliverables:  
 ###ttt5.html
+https://aboone08.github.io/dgmde28_assignment2-3/ttt5.html
 
 
 ### Question
