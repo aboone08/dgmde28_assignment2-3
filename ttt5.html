@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+<title>Assignment 2-2</title>
+  <style type="text/css">
+    .board {display: flex; flex-wrap: wrap; width: 350px;}
+    .square:hover { background-color: #A41034;}
+    .square {border: solid, black, 1px; width: 100px; height: 100px; margin: 5px; display: flex;  justify-content: space-around; text-align: center; font-family:'Permanent Marker' ; font-size: 60px;}
+    .player_turn, .win_condition {border: dashed, black, 1px; margin: 5px; padding: 5px;}
+  </style>
+</head>
+<body>
+    <h1>Assignment 2c: Tic Tac Toe Part 3</h1>
+    <h2>- Tic Tac Toe -</h2>
+    <div class='board' id='board'></div>
+        <div class='player_turn' id='player_turn'>
+            <!--Player Turn: Placeholder-->
+        </div>
+        <div class='win_condition' id='win_condition'>
+            <!--Win Condition Goes Here-->
+
+        </div>
+        <button onclick="restart()" id="restart">Restart Game</button> <!--add a buttom called "Start Game" that will clear the board-->
+
+        <script> 
+           window.onload = function(){
+            const square = document.getElementById('div');
+            const move = document.getElementById('player_turn');
+            const NUM_SQUARES = 9;
+            let currentPlayer = Math.random() < 0.5 ? 'X' : 'O'; //code that randomly chooses if X or O goes first
+            move.innerHTML = currentPlayer + ', you start this round.'; //code that indicates who goes first.
+            let moves = Array(NUM_SQUARES).fill('-'); //create a new array called moves with the current X or O value that is in the corresponding square – 
+            const winCondition = document.getElementById('win_condition');
+            let gameOver = false;
+
+            function ticTacToe(){
+                const winner = [ //creates a new array called winConditions with 8 strings (3 across, 3 down, 2 diagonal)
+                    [0,1,2], [3,4,5], [6,7,8], //Rows of the board
+                    [0,3,6], [1,4,7], [2,5,8], //Columns of the board
+                    [0,4,8], [2,4,6] //Diagonals
+                ];
+                const winConditions = winner.map(sequence => sequence.map(index => moves[index]).join(''));
+                winCondition.innerHTML = winConditions.join(' , '); //“XOO” ,  “XX-” ,  “O--“ , “XXO” , etc.
+                //Identify any that are XXX or OOO to determine if there is a win
+                if (winConditions.includes('XXX')) {
+                    winCondition.innerHTML = 'Congratulations Player X!';
+                    gameOver = true;
+                } else if (winConditions.includes('OOO')){
+                    winCondition.innerHTML = 'Congratulations Player O!';
+                    gameOver = true;
+                } else if (!moves.includes('-')) { //If not, look for any hypens in original array - if there are non, it's a stalemate.(stalemate means all squares are full and no winner)
+                    winCondition.innerHTML = 'Draw!'; //If there is a win/stalemate condition, display the status and disallow any additional “moves” until the button is clicked to restart the game
+                    gameOver = true;
+                }
+            }
+      
+            for (let i=0; i<NUM_SQUARES; i++){
+                let square = document.createElement('div');
+                square.classList.add('square');
+                square.id = 'sq' + i;
+                square.addEventListener('click', () => {
+                   if (!gameOver && !square.innerHTML) {
+                    square.innerHTML = currentPlayer; 
+                    moves[i] = currentPlayer;
+                    ticTacToe();
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; //alternates player moves
+                    if (!gameOver) move.innerHTML = `${currentPlayer}, it is your turn`;                    
+                    if (!gameOver) winCondition;
+                }     
+            });
+            board.appendChild(square); 
+            }
+        };
+
+        function restart(){ //restart function that resets the board
+            const squares = document.querySelectorAll('.square');
+            squares.forEach (square => square.innerHTML = '');
+            gameOver = false;
+            const move = document.getElementById('player_turn');
+            let currentPlayer = Math.random() < 0.5 ? 'X' : 'O';
+            move.innerHTML = currentPlayer + ', you start this round.'; 
+            const NUM_SQUARES = 9;
+            moves = Array(NUM_SQUARES).fill('-');
+            const winCondition = document.getElementById('win_condition');
+
+        };
+        </script>
+  </div>
+</body>
+</html>
